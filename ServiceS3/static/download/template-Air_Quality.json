@@ -1,0 +1,18 @@
+{	"sensorDevice_model":"Air_Quality",
+	"keys": [
+		{"field": "id_device", "type":"partition"},
+		{"field": "created_at"  ,"type":"sort"}
+	],
+
+	"keys_measures":[
+		{"field": "id_device", "type":"string"},
+		{"field": "created_at", "type":"string"}
+	],
+
+	"other_measures":[
+		{"field": "Temperature", "type": "number"},
+		{"field":"Humidity", "type": "number"},
+		{"field":"Gas", "type": "number"}
+	]
+
+}

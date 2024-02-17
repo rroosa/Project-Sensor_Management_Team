@@ -1,0 +1,11 @@
+kind : ConfigMap
+apiVersion: v1
+metadata:
+  name: configmap-servicedb
+data:
+  flaskenv: "development"
+  config_servicedb.cfg: |
+    ID_ACCOUNT_AWS="ID_ACCOUNT_AWS"
+    GROUP_NAME="SensorsManagerTeam"
+    SESSION_NAME="AssumeRoleSession"
+    

@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: servicedb-svc
+spec:
+  selector:
+    app: servicedb
+  type: ClusterIP
+  ports:
+    - name: port-service-servicedb
+      port: 83
+      targetPort: 5003
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: servicedb-deploy
+  labels:
+    app: servicedb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: servicedb
+  template:
+    metadata:
+      labels:
+        app: servicedb
+    spec:
+      containers:
+      - name: servicedb-app
+        image: rosazuccara/microservice-servicedb:deploy-v1
+        ports:
+          - containerPort: 5003
+        volumeMounts:
+          - name: vol-config-servicedb
+            mountPath: /ServiceDB/config_servicedb.cfg
+            subPath: config_servicedb.cfg
+        env:
+        - name: FLASK_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: configmap-servicedb
+              key: flaskenv
+        - name: AWS_CLI_AUTO_PROMPT
+          valueFrom:
+            configMapKeyRef:
+              name: configmap-aws-config
+              key: aws_cli
+        - name: AWS_DEFAULT_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: configmap-aws-config
+              key: aws_region
+        - name: AWS_DEFAULT_OUTPUT
+          valueFrom:
+            configMapKeyRef:
+              name: configmap-aws-config
+              key: aws_output
+        envFrom:
+          - secretRef:
+               name: aws-credential
+      volumes:
+        - name: vol-config-servicedb
+          configMap:
+             name: configmap-servicedb

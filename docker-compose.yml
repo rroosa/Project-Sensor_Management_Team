@@ -1,0 +1,64 @@
+version: '3'
+services:
+  services3:
+    image: rosazuccara/microservice-services3:deploy-v1
+    restart: always
+    volumes:
+      - $HOME/.aws:/root/.aws:ro
+      - type: bind
+        source: ./ServiceS3/config_serviceS3.cfg
+        target: /ServiceS3/config_serviceS3.cfg
+        read_only: true
+    healthcheck:
+          test: curl --fail http://localhost:5002/ || exit 1
+          interval: 40s
+          timeout: 10s
+          retries: 3
+          start_period: 60s
+    environment:
+      - FLASK_ENV="development"
+
+
+  servicedb:
+    image: rosazuccara/microservice-servicedb:deploy-v1
+    restart: always
+    volumes:
+      - $HOME/.aws:/root/.aws:ro
+      - type: bind
+        source: ./ServiceDB/config_servicedb.cfg
+        target: /ServiceDB/config_servicedb.cfg
+        read_only: true
+    healthcheck:
+          test: curl --fail http://localhost:5003/ || exit 1
+          interval: 40s
+          timeout: 10s
+          retries: 3
+          start_period: 60s
+    environment:
+      - FLASK_ENV="development"
+
+  gateway:
+    image: rosazuccara/microservice-gateway:deploy-v1
+    restart: always
+    depends_on:
+      - servicedb
+      - services3
+    healthcheck:
+          test: curl --fail http://localhost:5001/ || exit 1
+          interval: 40s
+          timeout: 10s
+          retries: 3
+          start_period: 60s
+    volumes:
+      - type: bind
+        source: ./Gateway/config_gateway.cfg
+        target: /Gateway/config_gateway.cfg
+        read_only: true
+    environment:
+      - FLASK_ENV="development"
+    ports:
+      - "8080:5001"
+
+    
+
+

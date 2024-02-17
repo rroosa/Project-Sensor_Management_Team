@@ -1,0 +1,13 @@
+FROM python:3.8-slim
+WORKDIR /Gateway
+COPY Gateway/ /Gateway
+WORKDIR /Gateway
+RUN apt-get update && apt-get install -y \
+curl
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
+EXPOSE 5001
+CMD ["python3","app.py"]
+
+
+
+

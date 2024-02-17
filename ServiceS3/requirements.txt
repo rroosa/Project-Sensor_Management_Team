@@ -1,0 +1,11 @@
+flask==2.3.2
+boto3==1.29.6
+colorama==0.4.6
+requests==2.30.0
+
+
+
+
+
+
+

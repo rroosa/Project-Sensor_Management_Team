@@ -1,0 +1,12 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: configmap-services3
+data:
+  flaskenv: "development"
+  config_serviceS3.cfg: |
+    GROUP_NAME="SensorsManagerTeam"
+    SESSION_NAME="AssumeRoleSession"
+    BUCKET_DATA_SHEET="sensors-data-sheet"
+    BUCKET_TEMAPLATE="sensor-device-template"
+    ID_ACCOUNT_AWS="ID_ACCOUNT_AWS"

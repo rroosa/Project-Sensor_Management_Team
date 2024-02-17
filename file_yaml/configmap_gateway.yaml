@@ -1,0 +1,15 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: configmap-gateway
+data:
+  flaskenv: "development"
+  config_gateway.cfg: |
+    HOST_S3 = "servicebucket-svc"
+    PORT_S3 = "82"
+    HOST_DB = "servicedb-svc"
+    PORT_DB = "83"
+    BUCKET_TEMPLATE="sensor-device-template"
+    BUCKET_DATA_SHEET="sensors-data-sheet"
+
+
