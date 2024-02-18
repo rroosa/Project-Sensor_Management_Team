@@ -19,8 +19,8 @@ class TestingConfig(Config):
 	BUCKET_TEMPLATE = 'sensor-device-template'
 	BUCKET_DATA_SHEET = 'sensors-data-sheet'
 
-	HOST_S3 = f"http://localhost"
-	HOST_DB = f"http://localhost"
+	HOST_S3 = f"localhost"
+	HOST_DB = f"localhost"
 	
 
 

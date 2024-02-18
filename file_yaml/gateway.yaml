@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: gateway-app
-          image: rosazuccara/microservice-gateway:deploy-v1
+          image: rosazuccara/microservice-gateway:deploy-v2
           ports:
             - name: flask-port
               containerPort: 5001

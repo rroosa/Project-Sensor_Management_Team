@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: servicebucket-app
-          image: rosazuccara/microservice-services3:deploy-v1
+          image: rosazuccara/microservice-services3:deploy-v2
           ports:
             - containerPort: 5002
           volumeMounts:

@@ -1121,9 +1121,8 @@ def store_DataDevice():
 	print(Fore.BLUE+ f"STEP-3/8 -> Manage Response obtained from Microservice S3 "+ Fore.RESET)
 
 
-	content_json = response.json()
-	content = content_json.get("Response")
-	list_keys_template = content.get("list_all_field_template")
+
+	
 	code = response.status_code
 	
 
@@ -1136,51 +1135,64 @@ def store_DataDevice():
 		response.headers['Content-Type'] = 'application/json'
 		return response
 
+
+
 	# il dispositivo è registrato
-	print(Fore.GREEN +f" Device [{sensorDevice_model}] is registered"+Fore.RESET)
-	print(f"List Keys Template: {list_keys_template} " )
-	print(type(list_keys_template))
-	
-	
-	print(Fore.BLUE + f" STEP-4/8 -> Save file of sensorDevice_data in local folder" + Fore.RESET)
+	list_keys_template=""
+	content_json = response.json()
+	content = content_json.get("Response")
 
-	destination = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'])
-	secure_file_name = secure_filename(sensorDevice_data.filename)
-	utility_Obj.save_file_into_server(sensorDevice_data, destination, secure_file_name)
+	if isinstance(content, dict):
+		list_keys_template = content.get("list_all_field_template")
+		print(Fore.GREEN +f" Device [{sensorDevice_model}] is registered"+Fore.RESET)
+		print(f"List Keys Template: {list_keys_template} " )
+		print(type(list_keys_template))
+		
+		
+		print(Fore.BLUE + f" STEP-4/8 -> Save file of sensorDevice_data in local folder" + Fore.RESET)
 
-	pathfile_local = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'],secure_file_name)
-	print("Local path: ",pathfile_local)
+		destination = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'])
+		secure_file_name = secure_filename(sensorDevice_data.filename)
+		utility_Obj.save_file_into_server(sensorDevice_data, destination, secure_file_name)
 
-	#-----------prepare request to MICROSERVICE DB ----------------- 
-	print(Fore.BLUE + f" STEP-5/8 -> Send Request POST to Microservice DB (file sensorDevice_data and list_keys_template)" + Fore.RESET)
+		pathfile_local = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'],secure_file_name)
+		print("Local path: ",pathfile_local)
 
-	# convert list in string -> [a,b,c] -> "a,b,c"
-	string_list_keys_template = ",".join(list_keys_template)
-	#print(string_list_keys_template)
-	f = open(pathfile_local,'rb')
-	data = {"list_keys_template": string_list_keys_template , "id_device":sensorDevice_model}
-	files = {"data_json": f}
-	header = {'ACCEPT': 'application/json'}
+		#-----------prepare request to MICROSERVICE DB ----------------- 
+		print(Fore.BLUE + f" STEP-5/8 -> Send Request POST to Microservice DB (file sensorDevice_data and list_keys_template)" + Fore.RESET)
 
-	url_destination = utility_Obj.getUrl_Connect_DB() + utility_Obj.getUrl_writeData_DB()
+		# convert list in string -> [a,b,c] -> "a,b,c"
+		string_list_keys_template = ",".join(list_keys_template)
+		#print(string_list_keys_template)
+		f = open(pathfile_local,'rb')
+		data = {"list_keys_template": string_list_keys_template , "id_device":sensorDevice_model}
+		files = {"data_json": f}
+		header = {'ACCEPT': 'application/json'}
 
-	response_from_DB = requests.post(url_destination, files = files, data = data, headers= header)
-	f.close()
-	print(Fore.BLUE + f"STEP-6/8 -> Manage Response obtained from Microservice DB"+ Fore.RESET)
-	message_success = f"The measurement data was saved correctly"
-	message_error = "Error saving measurement data"
-	source = "Microservice DB"
+		url_destination = utility_Obj.getUrl_Connect_DB() + utility_Obj.getUrl_writeData_DB()
+
+		response_from_DB = requests.post(url_destination, files = files, data = data, headers= header)
+		f.close()
+		print(Fore.BLUE + f"STEP-6/8 -> Manage Response obtained from Microservice DB"+ Fore.RESET)
+		message_success = f"The measurement data was saved correctly"
+		message_error = "Error saving measurement data"
+		source = "Microservice DB"
 
 
-	message_to_client = utility_Obj.handlerResponse( response_from_DB, source, message_success, message_error)
+		message_to_client = utility_Obj.handlerResponse( response_from_DB, source, message_success, message_error)
 
-	print(Fore.BLUE + f"STEP-7/8 -> Delete file from local folder"+ Fore.RESET)
+		print(Fore.BLUE + f"STEP-7/8 -> Delete file from local folder"+ Fore.RESET)
 
-	utility_Obj.deleteFile_from_server(destination, secure_file_name )
+		utility_Obj.deleteFile_from_server(destination, secure_file_name )
 
-	print(Fore.BLUE + f"STEP-8/8 -> Response to client-utent"+ Fore.RESET)
+		print(Fore.BLUE + f"STEP-8/8 -> Response to client-utent"+ Fore.RESET)
 
-	return jsonify({"Response": message_to_client})
+		return jsonify({"Response": message_to_client})
+	else:
+		data =  jsonify({"Response":{"Error to processing the request"}})
+		response = make_response(data, 707)
+		response.headers['Content-Type'] = 'application/json'
+		return response
 
 
 	

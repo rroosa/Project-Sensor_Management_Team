@@ -601,52 +601,59 @@ class DynamoBotoObj:
 			print(Fore.GREEN + f" Success in execution of Scan"+ Fore.RESET)
 			print(response)
 			#print(json.dumps(response.get('Items')))
-			print(Fore.YELLOW + f" Number of elements: {response.get('Count')}"+Fore.RESET)
+			if isinstance(response, tuple):
+				response = response[0]
+			if isinstance(response, dict):
 
-			#print(type(json.dumps(response.get('Items'))))
+				print(Fore.YELLOW + f" Number of elements: {response.get('Count')}"+Fore.RESET)
 
-			# convert [dict] -- in --> [dataframe]
-			consumedCapacity = response.get('ConsumedCapacity').get('CapacityUnits')
-			item_dataFrame = pd.DataFrame.from_dict(response.get('Items') )
+				#print(type(json.dumps(response.get('Items'))))
 
-			while 'LastEvaluatedKey' in response:
+				# convert [dict] -- in --> [dataframe]
+				consumedCapacity = response.get('ConsumedCapacity').get('CapacityUnits')
+				item_dataFrame = pd.DataFrame.from_dict(response.get('Items') )
 
-				if filterExpression == "" and select =="":
-					response = table.scan(
-						ExclusiveStartKey = response['LastEvaluatedKey'],
-						ReturnConsumedCapacity='TOTAL'
+				while 'LastEvaluatedKey' in response:
+
+					if filterExpression == "" and select =="":
+						response = table.scan(
+							ExclusiveStartKey = response['LastEvaluatedKey'],
+							ReturnConsumedCapacity='TOTAL'
+							)
+
+					elif filterExpression == "" and select !="":
+						response = table.scan(
+							ProjectionExpression = select,
+							ExclusiveStartKey = response['LastEvaluatedKey'],
+							ReturnConsumedCapacity='TOTAL'
 						)
+					elif filterExpression != "" and select =="":
+						response = table.scan(
+							FilterExpression = filterExpression,
+							ExpressionAttributeValues = expressionAttruibuteValues,
+							ExclusiveStartKey = response['LastEvaluatedKey'],
+							ReturnConsumedCapacity='TOTAL'
+						)
+					else:
+						response = table.scan(
+							FilterExpression = filterExpression,
+							ExpressionAttributeValues = expressionAttruibuteValues,
+							ProjectionExpression = select,
+							ExclusiveStartKey = response['LastEvaluatedKey'],
+							ReturnConsumedCapacity='TOTAL'
+						)
+					if isinstance(response, tuple):
+						response = response[0]
+					if isinstance(response, dict):
 
-				elif filterExpression == "" and select !="":
-					response = table.scan(
-						ProjectionExpression = select,
-						ExclusiveStartKey = response['LastEvaluatedKey'],
-						ReturnConsumedCapacity='TOTAL'
-					)
-				elif filterExpression != "" and select =="":
-					response = table.scan(
-						FilterExpression = filterExpression,
-						ExpressionAttributeValues = expressionAttruibuteValues,
-						ExclusiveStartKey = response['LastEvaluatedKey'],
-						ReturnConsumedCapacity='TOTAL'
-					)
-				else:
-					response = table.scan(
-						FilterExpression = filterExpression,
-						ExpressionAttributeValues = expressionAttruibuteValues,
-						ProjectionExpression = select,
-						ExclusiveStartKey = response['LastEvaluatedKey'],
-						ReturnConsumedCapacity='TOTAL'
-					)
-
-				consumedCapacity = consumedCapacity + response.get('ConsumedCapacity').get('CapacityUnits')
-				item_dataFrame_2 = pd.DataFrame.from_dict(response.get('Items') )
-				try:
-					item_dataFrame = pd.concat([item_dataFrame,item_dataFrame_2],ignore_index = True)
-					item_dataFrame.reset_index()
-				except ValueError as e:
-					print(Fore.RED+f"Error: {e}")
-					return f"Error: {e}",606
+						consumedCapacity = consumedCapacity + response.get('ConsumedCapacity').get('CapacityUnits')
+						item_dataFrame_2 = pd.DataFrame.from_dict(response.get('Items') )
+						try:
+							item_dataFrame = pd.concat([item_dataFrame,item_dataFrame_2],ignore_index = True)
+							item_dataFrame.reset_index()
+						except ValueError as e:
+							print(Fore.RED+f"Error: {e}")
+							return f"Error: {e}",606
 
 
 

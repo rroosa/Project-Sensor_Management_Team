@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: servicedb-app
-        image: rosazuccara/microservice-servicedb:deploy-v1
+        image: rosazuccara/microservice-servicedb:deploy-v2
         ports:
           - containerPort: 5003
         volumeMounts:
