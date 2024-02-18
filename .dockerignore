@@ -1,0 +1,5 @@
+#dockerignore
+ServiceDB/config_servicedb.cfg
+ServiceS3/config_serviceS3.cfg
+Gateway/config_gateway.cfg
+
