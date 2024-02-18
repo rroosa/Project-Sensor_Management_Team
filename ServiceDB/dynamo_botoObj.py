@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 import sys
 import os
 import botocore
-#from environment_config import *
+
 from boto3 import Session
 from botocore.credentials import RefreshableCredentials
 from botocore.session import get_session

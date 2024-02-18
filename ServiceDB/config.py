@@ -3,10 +3,10 @@ class Config(object):
 	TESTING = False
 	PORT = 5003	# port di default
 
-	TEMPLATE_DEVICE_FOLDER = 'static/template_device' #use
-	DATASET_DEVICE_FOLDER = 'static/dataset_device' #use
+	TEMPLATE_DEVICE_FOLDER = 'static/template_device' 
+	DATASET_DEVICE_FOLDER = 'static/dataset_device' 
 	DOWNLOAD_FOLDER = 'static/download' 
-	# save csv or excel file, of query result 
+	# save csv  file, of query result 
 
 
 class ProductionConfig(Config):

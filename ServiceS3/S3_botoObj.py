@@ -60,70 +60,6 @@ class S3BotoObj:
 	def setRoleSessionName(self, session_name):
 		self.session_name = session_name
 
-	"""
-	def assumeRolewithResourse(self):
-		try:
-			response = self.STS_client.assume_role(
-				RoleArn=self.assume_role_arn, RoleSessionName=self.session_name
-			)
-			self.temp_credentials = response["Credentials"]
-			print(self.temp_credentials)
-			print(f"Assumed role {self.assume_role_arn} and got temporary credentials.")
-		except ClientError as error:
-			print(
-				f"Couldn't assume role {self.assume_role_arn}. Here's why: "
-				f"{error.response['Error']['Message']}"
-				)
-			raise
-
-		self.S3_resourse = boto3.resource(
-				"s3",
-				aws_access_key_id = self.temp_credentials["AccessKeyId"],
-				aws_secret_access_key = self.temp_credentials["SecretAccessKey"],
-				aws_session_token = self.temp_credentials["SessionToken"],
-			)
-	"""
-	"""
-	def assumeRolewithClient(self):
-		try:
-			response = self.STS_client.assume_role(
-				RoleArn=self.assume_role_arn, RoleSessionName=self.session_name
-			)
-			self.temp_credentials = response["Credentials"]
-			print(self.temp_credentials)
-			print(f"Assumed role {self.assume_role_arn} and got temporary credentials.")
-		except ClientError as error:
-			print(
-				f"Couldn't assume role {self.assume_role_arn}. Here's why: "
-				f"{error.response['Error']['Message']}"
-				)
-			raise
-
-		self.S3_client = boto3.client(
-				"s3",
-				aws_access_key_id = self.temp_credentials["AccessKeyId"],
-				aws_secret_access_key = self.temp_credentials["SecretAccessKey"],
-				aws_session_token = self.temp_credentials["SessionToken"],
-			)
-	"""
-	#-----------------------------------------------
-	"""
-	def session_AssumeRole(self):
-		#session = boto3.Session(profile_name ='user2')
-		session = boto3.Session()
-		self.STS_client = session.client("sts")
-		response = self.STS_client.assume_role(
-			RoleArn = self.assume_role_arn, RoleSessionName = self.session_name, DurationSeconds= 3000 #DurationSeconds ()
-			)
-		new_session = boto3.Session(
-			aws_access_key_id = response['Credentials']['AccessKeyId'],
-			aws_secret_access_key = response['Credentials']['SecretAccessKey'],
-			aws_session_token = response['Credentials']['SessionToken']
-			)
-
-		self.S3_client = new_session.client('s3')
-
-	"""
 
 	def sessionWithRefresh(self):
 
@@ -240,29 +176,6 @@ class S3BotoObj:
 
 		return  "." in object_name and object_name.rsplit('.',1)[1].lower() in ALLOWED_EXTS
 
-	"""
-	def allowed_file(self, file_name, ext=None):
-		#file_name è il nome del file con estensione
-		ALLOWED_EXTS = ['docx',"pdf", "txt"]
-		
-		if "." in file_name and file_name.rsplit('.',1)[1].lower() in ALLOWED_EXTS:
-			extension = file_name.rsplit('.',1)[1].lower()
-			print("Extract extension ",file_name.rsplit('.',1)[1].lower()) # da file.text.docx -> ottengo [docx]
-			if ext is not None:
-				# si tratta di file
-				self.setExt("."+extension)
-				print( self.getExt())
-				return True
-			else:
-				# si tratta di Obj
-				if "."+extension == self.getExt():
-					return True
-				else:
-					return False
-		else:
-
-			return False
-	"""
 
 	def allowed_file_type(self, name, ext):
 		#file_name è il nome del file con estensione
@@ -442,12 +355,7 @@ class S3BotoObj:
 			return message, code
 		else:
 			return f"Success Delete Object [{object_name}]", 200
-	"""
-	def exampleListObject_in_Bucket(self):
-		my_bucket = self.S3_resourse.Bucket('sensor-data-sheet')
-		for my_bucket_obj in my_bucket.objects.all():
-			print(my_bucket_obj.key)
-	"""
+
 
 	def exampleListObject_in_Bucket_with_Session(self,bucket):
 		#bucket = os.environ['BUCKET_DATA_SHEET']

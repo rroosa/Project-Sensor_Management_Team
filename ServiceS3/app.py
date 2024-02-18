@@ -48,10 +48,7 @@ else:
 	print(Fore.RED+f"Export environment variable FLASK_ENV by setting to (testing || development || production)"+Fore.RESET, file=sys.stderr)
 	sys.exit()
 
-#app.config['UPLOAD_FOLDER']= 'static/upload'
-#app.config['DOWNLOAD_FOLDER'] = 'static/download'
-#app.config['ASSUME_ROLE_ARN'] = "arn:aws:iam::130680778050:role/demo-role-ab55cf51-1317-48eb-a6ce-2f2ab7530813"
-#app.config['SESSION_NAME'] = "AssumeRoleDemoSession"
+
 
 port_app_s3 = app.config['PORT'] # default 5002
 p_str = str(port_app_s3)
@@ -94,7 +91,7 @@ def listCategories():
 		response.headers['Content-Type'] = 'application/json'
 		return response
 
-		#return jsonify({"Bucket": message1, "List of categories": "-", "Response": listaFolder_error}) # error
+
 
 	listaCategories = []
 	print(Fore.CYAN + f"STEP-3/3 -> Send Response to Gateway"+Fore.RESET)
@@ -107,7 +104,7 @@ def listCategories():
 	return response
 
 
-	#return jsonify({"Bucket": message1, "List of categories": listaCategories})
+
 
 @app.route('/listObjects', methods=['GET'])
 def listObjects():
@@ -168,19 +165,6 @@ def listObjects():
 			)
 		response.headers["Content-Type"] = "application/json"
 		return response
-
-		#return jsonify({"Bucket":message2, "category": message1, "Response": listaObject}) # error
-	"""
-	else:
-		data = jsonify({"Response": listaObject})
-		response = make_response( data ,response_bool )
-		response.headers["Content-Type"] = "application/json"
-		return response
-	"""
-
-		#return jsonify({"Bucket":message2, "category": message1, "list Objects": listaObject})
-
-
 
 
 @app.route('/getObject', methods=['GET'])
@@ -259,26 +243,13 @@ def getObject():
 		object_name = response_type
 		print("New object_name: ", object_name )
 	
-	#----------------------------------
-	# TEST  CORRECT compile GET
-	#return jsonify({"Bucket":message1,"Object_name": message2, "Type_file": message3, "New object_name: ": object_name})
-	#-----------------------------
+
 
 	response_bool, response_mess, local_path_or_None = user_botoObj.download_file_from_S3(bucket, category, object_name)
 	print("LOCAL DIR or None:",local_path_or_None)
 	print("Message: ",response_mess)
 	if response_bool is True:
-		#---------------------no----------
-		#with open(path_local,'r', encoding = 'utf-8') as f:
-		#	lines = f.readlines()
-		#	print(lines)
 
-		#return Response(
-		#	print(open(path_local).read()),
-		#	mimetype = 'application/pdf',
-		#	headers = {"Content-Disposition": "attachment:filename={}".format(object_name)}
-		#	)
-		#----------------------------------
 		mimetype = ""
 		if type_file == 'text':
 			mimetype = 'text/plain'
@@ -288,18 +259,13 @@ def getObject():
 
 		elif type_file == 'pdf':
 			mimetype = 'application/pdf'
-		#return jsonify({"action":"get","from": bucket,"object_name":object_name, "Response": "Success"})
-		#'application/msword'
+
 		
 		workingdir = os.path.abspath(os.getcwd())
 		filepath = workingdir + '/static/download/'
-		#return send_file(filepath+object_name, mimetype='application/msword',as_attachment=True, download_name="output.doc")
-		#return send_file("static/download/word1.txt.docx", as_attachment = True)
-		
-		#-------
-		#return send_from_directory(filepath, object_name, as_attachment = False)
 
-		#deleteFile(os.path.join(app.root_path,app.config['DOWNLOAD_FOLDER'],object_name))
+
+
 		#--------------
 		# AGGIUNGERE as_attachment=True se si vuole SCARICARE
 		response = send_file(filepath+object_name, mimetype=mimetype, download_name=object_name)
@@ -307,10 +273,6 @@ def getObject():
 		response.headers["Access-Control-Expose-Headers"] = 'x-filename'
 		response.headers['Content-Type'] = mimetype
 		return response
-
-
-
-		#return jsonify({"action":"get","from": bucket,"object_name":object_name, "Response": "Success"})
 
 	else:
 
@@ -591,7 +553,7 @@ def registerDevice():
 			return response
 
 
-			#return jsonify({"filename":secure_file_name,"Object_name": object_name, "Bucket": bucket, "Response": mess})
+
 			
 
 
@@ -701,8 +663,7 @@ def putObject():
 		return jsonify({"filename":message1,"Object_name": object_name, "Bucket": message2, "Response": "Choose file type with extension [text (.txt) ||  word (.docx ) || pdf (.pdf )]"})
 		
 
-		#print(f"Upload file [{path_file.filename}] -> Falled")
-		#return jsonify({"action":"post","file_name":path_file.filename, "Response": "EXTENSION file not is allow"})
+
 
 
 
@@ -798,7 +759,7 @@ def deleteObject():
 		#else:
 		#	return jsonify({"action":"Delete","from_bucket": message1, "category":message4, "object_name":message2, "object_type": message3, "Response": f"Falled -> {response_s3}"})
 
-# NUOVO ----  TESTATO OK
+# NUOVO ----
 @app.route('/delete_Object',methods=['DELETE'])
 def delete_Object():
 	print("delete Object")
@@ -912,7 +873,7 @@ def delete_Object():
 
 
 
-# NUOVO TESTATO ok
+# 
 @app.route('/uploadObjectInBucket', methods=['POST'])
 def uploadObjectInBucket():
 	message1 = ""
@@ -1086,15 +1047,6 @@ def get_ListFields():
 		return response
 
 
-
-
-
-
-
-
-
-
-
 	if bucket is None or object_name is None or type_file is None:
 		print(Fore.RED+ f"Uncorrect fields of form"+Fore.RESET)
 
@@ -1130,39 +1082,11 @@ if __name__ == '__main__':
 	user_botoObj.setAssume_Role_Arn(assume_role_arn)
 	user_botoObj.setRoleSessionName(session_name)
 	#------------------------------------
-	"""
-	#------RESOURSE
-	user_botoObj.assumeRolewithResourse()
-	user_botoObj.exampleListObject_in_Bucket()
-	#------------------------------------
-	#-----CLIENT
-	user_botoObj.assumeRolewithClient()
-	"""
-	#-------------------
-	#----- SESSIONE ASSUME ROLE CLIENT ----- --------- 
-	#user_botoObj.session_AssumeRole()
-	#user_botoObj.exampleListObject_in_Bucket_with_Session()
-	#------------------------------------------------------------
+
 
 	##-------SESSIONE ASSUME ROLE CON REFRASH
 	user_botoObj.sessionWithRefresh()
+
 	bucket_D_S = app.config['BUCKET_DATA_SHEET']
-	#user_botoObj.exampleListObject_in_Bucket_with_Session(bucket_D_S)
-	#user_botoObj.exampleListFolder_in_Bucket_with_Session(bucket_D_S)
-
-
-	#user_botoObj.assumeRolewithClient()
-	"""
-	lista = user_botoObj.exampleListBuckets() # NELLA POLICY VEDERE LA LISTA DI TUTTI I BUCKET NON è PERMESSO
-	
-	if lista is False:
-		print ("Errore assume role")
-	else:
-		print("Existing buckets:")
-		for bucket in lista:
-			print(f"[{bucket}]")
-	
-	"""
-
 
 	app.run(host='0.0.0.0', port=port_app_s3, debug=True,use_reloader=False)

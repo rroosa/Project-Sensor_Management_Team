@@ -54,7 +54,7 @@ else:
 print("Local Folder")
 print(app.config['TEMPLATE_DEVICE_FOLDER'])  #use
 print(app.config['DATASET_DEVICE_FOLDER'])  #use
-print(app.config['DOWNLOAD_FOLDER']) # save csv or excel file, of query result 
+print(app.config['DOWNLOAD_FOLDER']) # save csv file, of query result 
 print(app.config['ID_ACCOUNT_AWS'])
 print(app.config['GROUP_NAME'])
 print(app.config['SESSION_NAME'])
@@ -71,7 +71,7 @@ def home():
 	return resp
 
 
-#TESTATO OK
+
 # richiesta relativa alla registrazione di un dispositivo -> comporta la creazione della tabella
 @app.route('/createTable', methods=['POST'])
 def createTable():
@@ -306,7 +306,7 @@ def write_Data():
 		return response
 
 
-### NUOVO - TESTATO 
+###
 @app.route('/delete_Table', methods=['DELETE'])
 def delete_Table():
 	message1 = ""

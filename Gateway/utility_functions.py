@@ -22,7 +22,7 @@ class UtilityFunction:
 
 			############################################
 			###			service S3							####
-			#self.url_S3 = f"http://localhost:5002"
+
 			self.url_S3 = None
 			self.url_uploadObjectInBucket = '/uploadObjectInBucket'
 			self.url_registerDevice = '/registerDevice'
@@ -37,7 +37,7 @@ class UtilityFunction:
 
 			######################################
 			### 		service DB           #####
-			#self.url_DB = f"http://localhost:5003"
+
 			self.url_DB = None
 			self.url_createTable = '/createTable'
 			self.url_deleteTable = '/delete_Table'
