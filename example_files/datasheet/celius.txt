@@ -1,0 +1,16 @@
+LM35 Precision Centigrade Temperature Sensors
+
+3 Description
+The LM35 series are precision integrated-circuit
+temperature devices with an output voltage linearlyproportional to the Centigrade temperature. 
+The LM35 device has an advantage over linear
+temperature sensors calibrated in Kelvin, as the user
+is not required to subtract a large constant voltage
+from the output to obtain convenient Centigrade
+scaling. The LM35 device does not require any
+external calibration or trimming to provide typical
+accuracies of ±¼°C at room temperature and ±¾°C
+over a full −55°C to 150°C temperature range. Lower
+cost is assured by trimming and calibration at the
+wafer level.
+

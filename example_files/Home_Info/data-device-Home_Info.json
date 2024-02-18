@@ -1,0 +1,5 @@
+[{"time_id":"2021-09-08T21:08:02","id_device":"dev-01","ping":17.28,"temperature":30.0,"humidity":35.0},
+{"time_id":"2021-09-14T21:10:15","id_device":"dev-01","ping":17.73,"temperature":23.0,"humidity":40.0},
+{"time_id":"2021-12-22T21:11:00","id_device":"dev-01","ping":18.59,"temperature":14.0,"humidity":55.0},
+{"time_id":"2021-09-08T21:17:00","id_device":"dev-02","ping":16.73,"temperature":15.0,"humidity":66.0},
+{"time_id":"2021-10-18T21:18:00","id_device":"dev-02","ping":18.00,"temperature":17.0,"humidity":60.0}]

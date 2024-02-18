@@ -1,0 +1,18 @@
+{	"sensorDevice_model":"Home_Info",
+	"keys": [
+		{"field": "time_id"  ,"type":"sort"},
+		{"field": "id_device", "type":"partition"}
+		
+	],
+
+	"keys_measures":[
+		{"field": "time_id" ,"type":"string"},
+		{"field": "id_device", "type":"string"}	
+	],
+	
+	"other_measures":[
+		{"field": "ping", "type": "number"},
+		{"field": "temperature", "type": "number"},
+		{"field": "humidity", "type": "number"}
+	]
+}

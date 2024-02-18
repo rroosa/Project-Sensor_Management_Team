@@ -1,0 +1,5 @@
+[{"created_at":"2022-06-11T14:20:46+00:00","id_device":"D-01","Temperature":31.2,"Humidity":81.6,"Gas":425},
+{"created_at":"2022-06-11T15:50:39+00:00","id_device":"D-01","Temperature":29.3,"Humidity":83.8,"Gas":425},
+{"created_at":"2022-06-11T16:55:22+00:00","id_device":"D-01","Temperature":35.4,"Humidity":84.6,"Gas":429},
+{"created_at":"2022-06-11T18:55:55+00:00","id_device":"D-02","Temperature":24.0,"Humidity":85.7,"Gas":438},
+{"created_at":"2022-06-11T20:56:28+00:00","id_device":"D-02","Temperature":27.5,"Humidity":90.6,"Gas":424}]
